@@ -15,7 +15,7 @@ type Props = {
 };
 
 const toastShow = ({ event, position }: Props) => {
-  switch (event.status) {
+  switch (event.type) {
     case "success":
       toast.success(event.message, { duration: 4000, position });
       break;

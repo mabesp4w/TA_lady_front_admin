@@ -64,7 +64,7 @@ type Store = {
 };
 
 const useFasilitas = create(
-  devtools<Store>((set) => ({
+  devtools<Store>((set, get) => ({
     dtFasilitas: {
       last_page: 0,
       current_page: 0,
@@ -211,13 +211,7 @@ const useFasilitas = create(
           },
           data: formData,
         });
-        set((prevState) => ({
-          dtFasilitas: {
-            last_page: prevState.dtFasilitas.last_page,
-            current_page: prevState.dtFasilitas.current_page,
-            data: [res.data.data, ...prevState.dtFasilitas.data],
-          },
-        }));
+        get().setFasilitas({});
         return {
           status: "berhasil tambah",
           data: res.data,
@@ -271,22 +265,7 @@ const useFasilitas = create(
           },
           data: formData,
         });
-        set((prevState) => ({
-          dtFasilitas: {
-            last_page: prevState.dtFasilitas.last_page,
-            current_page: prevState.dtFasilitas.current_page,
-            data: prevState.dtFasilitas.data.map((item: any) => {
-              if (item.id === id) {
-                return {
-                  ...item,
-                  ...response.data.data,
-                };
-              } else {
-                return item;
-              }
-            }),
-          },
-        }));
+        get().setFasilitas({});
         return {
           status: "berhasil update",
           data: response.data,

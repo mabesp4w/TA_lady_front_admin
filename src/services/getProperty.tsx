@@ -3,7 +3,7 @@
 import Image from "next/image";
 import moment from "moment";
 import Link from "next/link";
-import { url_storage } from "./baseURL";
+import { BASE_URL } from "./baseURL";
 
 const getYouTubeVideoId = (url: string) => {
   const regExp =
@@ -80,7 +80,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
         currentObj &&
         (["png", "jpg", "jpeg"].includes(extension) ? (
           <Image
-            src={`${url_storage}/${currentObj}`}
+            src={`${BASE_URL}/${currentObj}`}
             loading="lazy"
             width={70}
             height={70}

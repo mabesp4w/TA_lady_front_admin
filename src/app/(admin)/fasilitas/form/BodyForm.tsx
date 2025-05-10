@@ -8,7 +8,7 @@ import { FasilitasType, GambarFasilitasType } from "@/types";
 import { FC } from "react";
 import { FieldErrors } from "react-hook-form";
 import Image from "next/image";
-import { url_storage } from "@/services/baseURL";
+import { BASE_URL } from "@/services/baseURL";
 
 type Props = {
   register: any;
@@ -243,7 +243,7 @@ const BodyForm: FC<Props> = ({
                             src={
                               img.jalur_gambar.startsWith("/")
                                 ? img.jalur_gambar
-                                : `${url_storage}/${img.jalur_gambar}`
+                                : `${BASE_URL}/${img.jalur_gambar}`
                             }
                             alt={`Fasilitas Image ${img.id}`}
                             className="object-cover"

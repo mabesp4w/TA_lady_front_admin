@@ -49,7 +49,7 @@ export default async function submitData({
       toastShow({
         event: data,
       });
-    if (data?.status === "success") {
+    if (data?.type === "success") {
       resetForm && resetForm();
       goTo && goTo();
     }

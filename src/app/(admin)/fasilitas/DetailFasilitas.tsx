@@ -6,7 +6,7 @@ import ModalDef from "@/components/modal/ModalDef";
 import useFasilitas from "@/stores/crud/Fasilitas";
 import Image from "next/image";
 import { formatRupiah } from "@/utils/formatRupiah";
-import { url_storage } from "@/services/baseURL";
+import { BASE_URL } from "@/services/baseURL";
 
 const DetailFasilitas = () => {
   const { showFasilitas } = useFasilitas();
@@ -48,7 +48,7 @@ const DetailFasilitas = () => {
           <div className="relative h-64 w-full bg-gray-100 rounded-lg overflow-hidden">
             {activeImage ? (
               <Image
-                src={`${url_storage}/${activeImage}`}
+                src={`${BASE_URL}/${activeImage}`}
                 alt={showFasilitas.nm_fasilitas}
                 fill
                 className="object-cover"
@@ -77,7 +77,7 @@ const DetailFasilitas = () => {
                     onClick={() => setActiveImage(img.jalur_gambar)}
                   >
                     <Image
-                      src={`${url_storage}/${img.jalur_gambar}`}
+                      src={`${BASE_URL}/${img.jalur_gambar}`}
                       alt={`Thumbnail ${img.id}`}
                       fill
                       className="object-cover"
