@@ -1,16 +1,11 @@
-/**
- * eslint-disable @typescript-eslint/no-empty-object-type
- *
- * @format
- */
-/* eslint-disable @typescript-eslint/no-empty-object-type */
+/** @format */
 
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
 import useLogin from "../auth/login";
-import { KabupatenType } from "@/types";
-// store kabupaten
+import { JenisKamarType } from "@/types";
+// jenisKamar
 type Props = {
   page?: number;
   limit?: number;
@@ -20,28 +15,28 @@ type Props = {
 };
 
 type Store = {
-  dtKabupaten: {
+  dtJenisKamar: {
     last_page: number;
     current_page: number;
-    data: KabupatenType[];
+    data: JenisKamarType[];
   };
 
-  showKabupaten: KabupatenType | null;
+  showJenisKamar: JenisKamarType | null;
 
-  setKabupaten: ({ page, limit, search, sortby, order }: Props) => Promise<{
+  setJenisKamar: ({ page, limit, search, sortby, order }: Props) => Promise<{
     status: string;
-    data?: {};
-    error?: {};
+    data?: object;
+    error?: object;
   }>;
 
-  setShowKabupaten: (id: number | string) => Promise<{
+  setShowJenisKamar: (id: number | string) => Promise<{
     status: string;
-    data?: {};
-    error?: {};
+    data?: object;
+    error?: object;
   }>;
 
   addData: (
-    data: KabupatenType
+    data: JenisKamarType
   ) => Promise<{ status: string; data?: any; error?: any }>;
 
   removeData: (
@@ -50,24 +45,31 @@ type Store = {
 
   updateData: (
     id: number | string,
-    data: KabupatenType
+    data: JenisKamarType
   ) => Promise<{ status: string; data?: any; error?: any }>;
+
+  getAllJenisKamar: () => Promise<{
+    status: string;
+    data?: JenisKamarType[];
+    error?: any;
+  }>;
 };
 
-const useKabupaten = create(
+const useJenisKamar = create(
   devtools<Store>((set) => ({
-    dtKabupaten: {
+    dtJenisKamar: {
       last_page: 0,
       current_page: 0,
       data: [],
     },
-    showKabupaten: null,
-    setKabupaten: async ({ page = 1, limit = 10, search, sortby, order }) => {
+    showJenisKamar: null,
+
+    setJenisKamar: async ({ page = 1, limit = 10, search, sortby, order }) => {
       const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
-          url: `/kabupaten/`,
+          url: `/jenis-kamar/`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
@@ -79,7 +81,7 @@ const useKabupaten = create(
         });
         set((state) => ({
           ...state,
-          dtKabupaten: response.data.data,
+          dtJenisKamar: response.data.data,
         }));
         return {
           status: "berhasil",
@@ -92,17 +94,18 @@ const useKabupaten = create(
         };
       }
     },
-    setShowKabupaten: async (id) => {
+
+    setShowJenisKamar: async (id) => {
       const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
-          url: `/kabupaten/${id}/`,
+          url: `/jenis-kamar/${id}/`,
           headers: { Authorization: `Bearer ${token}` },
         });
         set((state) => ({
           ...state,
-          showKabupaten: response.data.data,
+          showJenisKamar: response.data.data,
         }));
         return {
           status: "berhasil",
@@ -115,20 +118,21 @@ const useKabupaten = create(
         };
       }
     },
+
     addData: async (row) => {
       const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
-          url: `/kabupaten/`,
+          url: `/jenis-kamar/`,
           headers: { Authorization: `Bearer ${token}` },
           data: row,
         });
         set((prevState) => ({
-          dtKabupaten: {
-            last_page: prevState.dtKabupaten.last_page,
-            current_page: prevState.dtKabupaten.current_page,
-            data: [res.data.data, ...prevState.dtKabupaten.data],
+          dtJenisKamar: {
+            last_page: prevState.dtJenisKamar.last_page,
+            current_page: prevState.dtJenisKamar.current_page,
+            data: [res.data.data, ...prevState.dtJenisKamar.data],
           },
         }));
         return {
@@ -142,19 +146,20 @@ const useKabupaten = create(
         };
       }
     },
+
     removeData: async (id) => {
       const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
-          url: `/kabupaten/${id}/`,
+          url: `/jenis-kamar/${id}/`,
           headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState) => ({
-          dtKabupaten: {
-            last_page: prevState.dtKabupaten.last_page,
-            current_page: prevState.dtKabupaten.current_page,
-            data: prevState.dtKabupaten.data.filter(
+          dtJenisKamar: {
+            last_page: prevState.dtJenisKamar.last_page,
+            current_page: prevState.dtJenisKamar.current_page,
+            data: prevState.dtJenisKamar.data.filter(
               (item: any) => item.id !== id
             ),
           },
@@ -170,20 +175,21 @@ const useKabupaten = create(
         };
       }
     },
+
     updateData: async (id, row) => {
       const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "PUT",
-          url: `/kabupaten/${id}/`,
+          url: `/jenis-kamar/${id}/`,
           headers: { Authorization: `Bearer ${token}` },
           data: row,
         });
         set((prevState) => ({
-          dtKabupaten: {
-            last_page: prevState.dtKabupaten.last_page,
-            current_page: prevState.dtKabupaten.current_page,
-            data: prevState.dtKabupaten.data.map((item: any) => {
+          dtJenisKamar: {
+            last_page: prevState.dtJenisKamar.last_page,
+            current_page: prevState.dtJenisKamar.current_page,
+            data: prevState.dtJenisKamar.data.map((item: any) => {
               if (item.id === id) {
                 return {
                   ...item,
@@ -206,7 +212,27 @@ const useKabupaten = create(
         };
       }
     },
+
+    getAllJenisKamar: async () => {
+      const token = await useLogin.getState().setToken();
+      try {
+        const response = await crud({
+          method: "get",
+          url: `/jenis-kamar/all-categories/`,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        return {
+          status: "berhasil",
+          data: response.data.data,
+        };
+      } catch (error: any) {
+        return {
+          status: "error",
+          error: error.response?.data,
+        };
+      }
+    },
   }))
 );
 
-export default useKabupaten;
+export default useJenisKamar;

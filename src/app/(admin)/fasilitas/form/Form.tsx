@@ -205,7 +205,7 @@ const Form = ({ dtEdit, halaman }: Props) => {
   };
 
   return (
-    <ModalDef id="add_fasilitas" title={`Form ${halaman}`} size="max-w-4xl">
+    <ModalDef id="add_fasilitas" title={`Form ${halaman}`} size="lg">
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputText name="id" register={register} type="hidden" />
         <InputText name="gambar_utama_id" register={register} type="hidden" />

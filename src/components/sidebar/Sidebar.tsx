@@ -39,7 +39,7 @@ const Sidebar: React.FC = () => {
   const menuItems: MenuItemType[] = [
     {
       name: "Dashboard",
-      path: "/dashboard",
+      path: "/",
       icon: <HiHome className="w-6 h-6" />,
     },
     {
@@ -49,7 +49,6 @@ const Sidebar: React.FC = () => {
       subMenus: [
         { name: "Semua Kamar", path: "/kamar" },
         { name: "Jenis Kamar", path: "/kamar/jenis" },
-        { name: "Gambar Kamar", path: "/kamar/gambar" },
       ],
     },
     {

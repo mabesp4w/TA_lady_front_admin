@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import moment from "moment";
-import Link from "next/link";
 import { BASE_URL } from "./baseURL";
+import { formatRupiah } from "@/utils/formatRupiah";
 
 const getYouTubeVideoId = (url: string) => {
   const regExp =
@@ -62,7 +62,11 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
       i++;
     }
 
-    // Handle hasil akhir
+    // cek currency
+    const currencyProps = ["harga", "harga_per_malam"];
+    if (currencyProps.includes(prop)) {
+      return formatRupiah(currentObj);
+    }
 
     // Date processing
     const dateProps = ["announcement_date", "news_date", "tgl_bergabung"];
@@ -74,7 +78,6 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
     const fileProps = ["cover_image", "file_book", "main_image"];
     if (fileProps.includes(prop)) {
       const extension = currentObj?.split(".")?.pop();
-      const file_nm = currentObj?.split("/")?.pop();
 
       return (
         currentObj &&
@@ -91,15 +94,6 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
               setIndexBox?.(index);
             }}
           />
-        ) : ["epub"].includes(extension) ? (
-          <Link
-            href={`/admin/books/views?file_nm=${file_nm}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-blue-700"
-          >
-            Baca Buku
-          </Link>
         ) : (
           <a
             href={`${currentObj}`}
@@ -133,7 +127,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
     }
 
     // boolean value
-    const booleanProps = ["aktif"];
+    const booleanProps = ["aktif", "tersedia"];
     if (booleanProps.includes(prop)) {
       return currentObj ? "Ya" : "Tidak";
     }
