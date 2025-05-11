@@ -18,6 +18,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
   if (parts.length > 0) {
     const first = parts[0];
     const rest = parts.slice(1);
+    const lastPart = parts[parts.length - 1]; // Mengambil properti terakhir
 
     // Jika properti pertama adalah array
     if (Array.isArray(obj[first])) {
@@ -37,6 +38,16 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
               }
             }
 
+            // Cek jika nilai akhir adalah harga yang perlu diformat
+            const currencyProps = ["harga", "harga_per_malam"];
+            if (
+              currencyProps.includes(lastPart) &&
+              value !== null &&
+              value !== undefined
+            ) {
+              return formatRupiah(value);
+            }
+
             return value;
           })
           .filter((val) => val !== null && val !== undefined);
@@ -51,7 +62,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
       return "";
     }
 
-    // Proses untuk properti bukan array (seperti kode asli)
+    // Proses untuk properti bukan array
     let current = first;
     let currentObj = obj[current];
     let i = 1;
@@ -64,19 +75,48 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
 
     // cek currency
     const currencyProps = ["harga", "harga_per_malam"];
-    if (currencyProps.includes(prop)) {
+    if (currencyProps.includes(lastPart)) {
       return formatRupiah(currentObj);
+    }
+    // cek status
+    const statusProps = ["status", "status_pembayaran"];
+    if (statusProps.includes(lastPart)) {
+      return (
+        <span
+          className={
+            "badge " +
+            (currentObj === "menunggu"
+              ? "badge-warning"
+              : currentObj === "dikonfirmasi"
+              ? "badge-primary"
+              : currentObj === "check_in"
+              ? "badge-success"
+              : currentObj === "check_out"
+              ? "badge-info"
+              : currentObj === "dibatalkan"
+              ? "badge-error"
+              : "")
+          }
+        >
+          {currentObj.replace("_", " ").toUpperCase()}
+        </span>
+      );
     }
 
     // Date processing
     const dateProps = ["announcement_date", "news_date", "tgl_bergabung"];
-    if (dateProps.includes(prop)) {
+    if (dateProps.includes(lastPart)) {
       return moment(currentObj).format("DD/MM/YYYY");
     }
 
     // Image processing
-    const fileProps = ["cover_image", "file_book", "main_image"];
-    if (fileProps.includes(prop)) {
+    const fileProps = [
+      "cover_image",
+      "file_book",
+      "main_image",
+      "jalur_gambar",
+    ];
+    if (fileProps.includes(lastPart)) {
       const extension = currentObj?.split(".")?.pop();
 
       return (
@@ -109,7 +149,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
 
     // YouTube URL processing
     const YoutubUrl = ["youtube_url"];
-    if (YoutubUrl.includes(prop)) {
+    if (YoutubUrl.includes(lastPart)) {
       return (
         <a href={currentObj} target="_blank" rel="noopener noreferrer">
           <Image
@@ -128,7 +168,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
 
     // boolean value
     const booleanProps = ["aktif", "tersedia"];
-    if (booleanProps.includes(prop)) {
+    if (booleanProps.includes(lastPart)) {
       return currentObj ? "Ya" : "Tidak";
     }
 

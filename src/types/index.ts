@@ -23,6 +23,7 @@ export interface KamarType extends BaseModel {
   tersedia: boolean;
   lantai: string;
   catatan?: string;
+  gambar_utama_id?: string;
   jenis_kamar?: JenisKamarType; // Relation
   gambar_kamar?: GambarKamarType[]; // Relation
 }
@@ -102,6 +103,13 @@ export interface PemesananKamarType extends BaseModel {
   status_pembayaran: "belum_dibayar" | "dibayar" | "dikembalikan";
   user?: UserType; // Relation
   kamar?: KamarType; // Relation
+  pembayaran?: {
+    id: string | number;
+    jumlah: number;
+    metode_pembayaran: string;
+    status: string;
+    created_at: string;
+  }[];
 }
 
 // Pemesanan Fasilitas (Facility Booking)

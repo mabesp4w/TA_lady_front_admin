@@ -4,8 +4,8 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { api } from "@/services/baseURL";
 import useLogin from "../auth/login";
-import { KategoriProdukType } from "@/types";
-// kategoriProduk
+import { JenisKamarType } from "@/types";
+// jenisKamar
 type Props = {
   page?: number;
   limit?: number;
@@ -16,9 +16,9 @@ type Props = {
 };
 
 type Store = {
-  dtKategoriProduk: KategoriProdukType[];
+  dtJenisKamar: JenisKamarType[];
 
-  setKategoriProduk: ({
+  setJenisKamar: ({
     page,
     limit,
     search,
@@ -32,11 +32,11 @@ type Store = {
   }>;
 };
 
-const useKategoriProdukApi = create(
+const useJenisKamarApi = create(
   devtools<Store>((set) => ({
-    dtKategoriProduk: [],
+    dtJenisKamar: [],
 
-    setKategoriProduk: async ({
+    setJenisKamar: async ({
       page,
       limit,
       search,
@@ -48,7 +48,7 @@ const useKategoriProdukApi = create(
       try {
         const response = await api({
           method: "get",
-          url: `/kategori-produk/`,
+          url: `/jenis-kamar/`,
           headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
@@ -61,7 +61,7 @@ const useKategoriProdukApi = create(
         });
         set((state) => ({
           ...state,
-          dtKategoriProduk: response.data.data,
+          dtJenisKamar: response.data.data,
         }));
         return {
           status: "berhasil",
@@ -77,4 +77,4 @@ const useKategoriProdukApi = create(
   }))
 );
 
-export default useKategoriProdukApi;
+export default useJenisKamarApi;

@@ -4,33 +4,64 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { api } from "@/services/baseURL";
 import useLogin from "../auth/login";
-import { KecamatanType } from "@/types";
-// kecamatan
-type Store = {
-  dtKecamatan: KecamatanType[];
+import { FasilitasType } from "@/types";
+// fasilitas
+type Props = {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortby?: string;
+  order?: string;
+  paginate?: boolean;
+};
 
-  setKecamatan: () => Promise<{
+type Store = {
+  dtFasilitas: FasilitasType[];
+
+  setFasilitas: ({
+    page,
+    limit,
+    search,
+    sortby,
+    order,
+    paginate,
+  }: Props) => Promise<{
     status: string;
     data?: any;
     error?: any;
   }>;
 };
 
-const useKecamatanApi = create(
+const useFasilitasApi = create(
   devtools<Store>((set) => ({
-    dtKecamatan: [],
+    dtFasilitas: [],
 
-    setKecamatan: async () => {
+    setFasilitas: async ({
+      page,
+      limit,
+      search,
+      sortby,
+      order,
+      paginate = false,
+    }: Props) => {
       const token = await useLogin.getState().setToken();
       try {
         const response = await api({
           method: "get",
-          url: `/kecamatan/`,
+          url: `/fasilitas/`,
           headers: { Authorization: `Bearer ${token}` },
+          params: {
+            limit,
+            page,
+            search,
+            sortby,
+            order,
+            paginate,
+          },
         });
         set((state) => ({
           ...state,
-          dtKecamatan: response.data,
+          dtFasilitas: response.data.data,
         }));
         return {
           status: "berhasil",
@@ -46,4 +77,4 @@ const useKecamatanApi = create(
   }))
 );
 
-export default useKecamatanApi;
+export default useFasilitasApi;
