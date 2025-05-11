@@ -21,7 +21,7 @@ const layout = ({ children }: Props) => {
               <Sidebar />
             </Suspense>
           </div>
-          <div className="lg:ml-56 w-full bg-base-100 flex flex-col">
+          <div className="lg:ml-72 w-full bg-base-100 flex flex-col">
             <div className="h-10 w-full shadow-xl mb-2 flex items-center">
               <Suspense fallback={<div>Loading...</div>}>
                 <HeaderDef />

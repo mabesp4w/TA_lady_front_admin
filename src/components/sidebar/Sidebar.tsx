@@ -1,118 +1,218 @@
 /** @format */
+
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
-import { setAdminMenus } from "./ListMenus";
-import MenuType from "@/types/MenuType";
+
+import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-// import Cookies from "js-cookie";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import handleLogout from "@/app/auth/logout/logout";
-import useLogout from "@/stores/auth/logout";
+import { usePathname } from "next/navigation";
+import {
+  HiHome,
+  HiUsers,
+  HiOfficeBuilding,
+  HiBell,
+  HiShoppingCart,
+  HiCollection,
+  HiReceiptTax,
+  HiMenu,
+  HiX,
+  HiChevronDown,
+  HiChevronRight,
+} from "react-icons/hi";
 
-const Sidebar = () => {
-  // state
-  const [menus, setMenus] = useState<MenuType[]>([]);
-  const [loadLogout, setLoadLogout] = useState(false);
-  // const role = Cookies.get("role");
-  const role = "admin";
-  // store
-  const { setLogout } = useLogout();
+type SubMenuType = {
+  name: string;
+  path: string;
+};
 
+type MenuItemType = {
+  name: string;
+  path: string;
+  icon: React.ReactNode;
+  subMenus?: SubMenuType[];
+};
+
+const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [openMenus, setOpenMenus] = useState<string[]>([]);
 
-  const isActiveLink = (href: string, params?: string) => {
-    if (!href) return false;
-    if (params) {
-      return pathname === href && searchParams.toString() === params.slice(1);
+  const menuItems: MenuItemType[] = [
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <HiHome className="w-6 h-6" />,
+    },
+    {
+      name: "Kamar",
+      path: "/kamar",
+      icon: <HiOfficeBuilding className="w-6 h-6" />,
+      subMenus: [
+        { name: "Semua Kamar", path: "/kamar" },
+        { name: "Jenis Kamar", path: "/kamar/jenis" },
+        { name: "Gambar Kamar", path: "/kamar/gambar" },
+      ],
+    },
+    {
+      name: "Fasilitas",
+      path: "/fasilitas",
+      icon: <HiBell className="w-6 h-6" />,
+    },
+    {
+      name: "Produk",
+      path: "/produk",
+      icon: <HiShoppingCart className="w-6 h-6" />,
+      subMenus: [
+        { name: "Semua Produk", path: "/produk" },
+        { name: "Kategori Produk", path: "/produk/kategori" },
+      ],
+    },
+    {
+      name: "Pemesanan",
+      path: "/pemesanan",
+      icon: <HiCollection className="w-6 h-6" />,
+      subMenus: [
+        { name: "Pemesanan Kamar", path: "/pemesanan/kamar" },
+        { name: "Pemesanan Fasilitas", path: "/pemesanan/fasilitas" },
+      ],
+    },
+    {
+      name: "Pesanan",
+      path: "/pesanan",
+      icon: <HiReceiptTax className="w-6 h-6" />,
+      subMenus: [
+        { name: "Semua Pesanan", path: "/pesanan" },
+        { name: "Item Pesanan", path: "/pesanan/item" },
+      ],
+    },
+    {
+      name: "Pembayaran",
+      path: "/pembayaran",
+      icon: <HiReceiptTax className="w-6 h-6" />,
+      subMenus: [
+        { name: "Semua Pembayaran", path: "/pembayaran" },
+        { name: "Transaksi Midtrans", path: "/pembayaran/midtrans" },
+      ],
+    },
+    {
+      name: "Pelanggan",
+      path: "/pelanggan",
+      icon: <HiUsers className="w-6 h-6" />,
+    },
+  ];
+
+  const toggleMenu = (menuName: string) => {
+    if (openMenus.includes(menuName)) {
+      setOpenMenus(openMenus.filter((name) => name !== menuName));
+    } else {
+      setOpenMenus([...openMenus, menuName]);
     }
-    return pathname === href;
   };
 
-  const isActiveParent = (menu: MenuType) => {
-    if (!menu.subMenus) return false;
-    return menu.subMenus.some((subMenu) =>
-      isActiveLink(subMenu?.href || "", subMenu.params)
-    );
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
   };
 
-  const getListMenu = useCallback(() => {
-    if (role === "admin") {
-      setMenus(setAdminMenus());
-    }
-  }, [role]);
+  const isActiveLink = (path: string) => {
+    return pathname === path;
+  };
 
-  useEffect(() => {
-    getListMenu();
-  }, [getListMenu]);
-
-  if (menus.length === 0) {
-    return (
-      <div className="fixed h-full flex w-56 justify-center items-center">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      </div>
-    );
-  }
+  const isActiveParent = (path: string) => {
+    return pathname?.startsWith(path);
+  };
 
   return (
-    <aside className="bg-base-200 h-full flex flex-col w-56">
-      {/* image */}
-      <div className="relative h-32 w-40 mx-auto">
-        <Image src="/images/logo.png" alt="logo" fill className="" />
+    <div className="relative">
+      {/* Mobile sidebar toggle */}
+      <button
+        className="md:hidden fixed top-4 left-4 z-50 btn btn-sm btn-circle btn-primary"
+        onClick={toggleSidebar}
+      >
+        {isCollapsed ? <HiMenu /> : <HiX />}
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`bg-base-200 text-base-content h-screen fixed transition-all duration-300 ease-in-out z-40 md:shadow-lg ${
+          isCollapsed ? "-translate-x-full" : "translate-x-0"
+        } md:translate-x-0`}
+        style={{ width: "280px" }}
+      >
+        {/* Logo */}
+        <div className="px-6 py-4 border-b border-base-300">
+          <h1 className="text-xl font-bold">Hotel Management</h1>
+        </div>
+
+        {/* Menu Items */}
+        <div className="overflow-y-auto h-[calc(100vh-4rem)]">
+          <ul className="menu p-4 text-base-content">
+            {menuItems.map((item) => (
+              <li key={item.name} className="mb-1">
+                {item.subMenus ? (
+                  <div
+                    className={`flex items-center justify-between p-3 rounded-lg cursor-pointer ${
+                      isActiveParent(item.path)
+                        ? "bg-primary text-primary-content"
+                        : "hover:bg-base-300"
+                    }`}
+                    onClick={() => toggleMenu(item.name)}
+                  >
+                    <div className="flex items-center gap-3">
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </div>
+                    {openMenus.includes(item.name) ? (
+                      <HiChevronDown className="w-5 h-5" />
+                    ) : (
+                      <HiChevronRight className="w-5 h-5" />
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    href={item.path}
+                    className={`flex items-center gap-3 p-3 rounded-lg ${
+                      isActiveLink(item.path)
+                        ? "bg-primary text-primary-content"
+                        : "hover:bg-base-300"
+                    }`}
+                  >
+                    {item.icon}
+                    <span>{item.name}</span>
+                  </Link>
+                )}
+
+                {/* Submenu */}
+                {item.subMenus && openMenus.includes(item.name) && (
+                  <ul className="menu pl-6 mt-1">
+                    {item.subMenus.map((subItem) => (
+                      <li key={subItem.name}>
+                        <Link
+                          href={subItem.path}
+                          className={`p-3 rounded-lg ${
+                            isActiveLink(subItem.path)
+                              ? "bg-primary/20 font-medium"
+                              : "hover:bg-base-300"
+                          }`}
+                        >
+                          {subItem.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      <ul className="menu p-4 text-lg rounded-box h-full overflow-auto block">
-        {menus.map((menu, index) => (
-          <li key={index}>
-            {menu.subMenus ? (
-              <details open={isActiveParent(menu)}>
-                <summary className="flex items-center gap-2">
-                  {menu.icon}
-                  {menu.name}
-                </summary>
-                <ul>
-                  {menu.subMenus.map((subMenu, subIndex) => (
-                    <li key={subIndex}>
-                      <Link
-                        href={`${subMenu.href}${subMenu.params || ""}`}
-                        className={
-                          isActiveLink(subMenu?.href || "", subMenu.params)
-                            ? "active"
-                            : ""
-                        }
-                      >
-                        {subMenu.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            ) : (
-              <Link
-                href={menu.href || "#"}
-                className={`flex items-center gap-2 ${
-                  isActiveLink(menu?.href || "") ? "active" : ""
-                }`}
-              >
-                {menu.icon}
-                {menu.name}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-      {loadLogout ? (
-        <span className="loading loading-spinner loading-lg text-primary"></span>
-      ) : (
-        <button
-          className="btn btn-primary"
-          onClick={() => handleLogout({ setLogout, setLoadLogout, router })}
-        >
-          Logout
-        </button>
+
+      {/* Overlay for mobile sidebar */}
+      {!isCollapsed && (
+        <div
+          className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={toggleSidebar}
+        />
       )}
-    </aside>
+    </div>
   );
 };
 
