@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { ProdukType } from "@/types";
 
 type Props = {
@@ -92,12 +91,11 @@ const useProduk = create(
       kategori_produk_id,
       tersedia,
     }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/produk/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
           params: {
             limit,
             page,
@@ -126,12 +124,11 @@ const useProduk = create(
     },
 
     setShowProduk: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/produk/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
         });
 
         if (response.data && response.data.data) {
@@ -160,12 +157,11 @@ const useProduk = create(
     },
 
     getAvailableProducts: async (kategori_produk_id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/produk/available/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
           params: {
             kategori_produk_id,
           },
@@ -187,13 +183,11 @@ const useProduk = create(
     },
 
     addData: async (formData) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/produk/`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
@@ -212,12 +206,11 @@ const useProduk = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/produk/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
         });
         set((prevState) => ({
           dtProduk: {
@@ -239,13 +232,11 @@ const useProduk = create(
     },
 
     updateData: async (id, formData) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/produk/${id}?_method=PUT`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
@@ -264,13 +255,11 @@ const useProduk = create(
     },
 
     updateStock: async (id, jumlah_stok, operation) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/produk/${id}/stock`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: {

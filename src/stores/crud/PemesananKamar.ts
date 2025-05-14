@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { PemesananKamarType } from "@/types";
 
 type Props = {
@@ -87,12 +86,11 @@ const usePemesananKamar = create(
       status,
       user_id,
     }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/pemesanan-kamar/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
           params: {
             limit,
             page,
@@ -121,12 +119,11 @@ const usePemesananKamar = create(
     },
 
     setShowPemesanan: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/pemesanan-kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
         });
 
         if (response.data && response.data.data) {
@@ -155,13 +152,11 @@ const usePemesananKamar = create(
     },
 
     addData: async (data) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/pemesanan-kamar/`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data,
@@ -180,12 +175,11 @@ const usePemesananKamar = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/pemesanan-kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
         });
         set((prevState) => ({
           dtPemesanan: {
@@ -209,13 +203,11 @@ const usePemesananKamar = create(
     },
 
     updateData: async (id, data) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "PUT",
           url: `/pemesanan-kamar/${id}/`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data,
@@ -234,13 +226,11 @@ const usePemesananKamar = create(
     },
 
     updateStatus: async (id, status) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/pemesanan-kamar/${id}/update-status`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: { status },
@@ -260,13 +250,11 @@ const usePemesananKamar = create(
     },
 
     processPayment: async (id, metode_pembayaran) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/pemesanan-kamar/${id}/process-payment`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: { metode_pembayaran },

@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { PemesananFasilitasType } from "@/types";
 
 type Props = {
@@ -115,12 +114,10 @@ const usePemesananFasilitas = create(
       status,
       user_id,
     }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/pemesanan-fasilitas/`,
-          headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
@@ -159,12 +156,10 @@ const usePemesananFasilitas = create(
       tanggal_akhir,
       fasilitas_id,
     }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/pemesanan-fasilitas/admin/bookings`,
-          headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
@@ -195,12 +190,10 @@ const usePemesananFasilitas = create(
     },
 
     setShowPemesanan: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/pemesanan-fasilitas/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.data && response.data.data) {
@@ -229,12 +222,10 @@ const usePemesananFasilitas = create(
     },
 
     getPemesananByCode: async (code) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/pemesanan-fasilitas/code/${code}`,
-          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (response.data && response.data.data) {
@@ -257,13 +248,11 @@ const usePemesananFasilitas = create(
     },
 
     addData: async (data) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/pemesanan-fasilitas/`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data,
@@ -282,12 +271,10 @@ const usePemesananFasilitas = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/pemesanan-fasilitas/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState) => ({
           dtPemesanan: {
@@ -311,13 +298,11 @@ const usePemesananFasilitas = create(
     },
 
     updateData: async (id, data) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "PUT",
           url: `/pemesanan-fasilitas/${id}/`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data,
@@ -337,13 +322,11 @@ const usePemesananFasilitas = create(
     },
 
     changeStatus: async (id, status) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/pemesanan-fasilitas/${id}/change-status`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
           data: { status },
@@ -363,13 +346,12 @@ const usePemesananFasilitas = create(
     },
 
     getStatistics: async (bulan = "", tahun = "") => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "GET",
           url: `/pemesanan-fasilitas/statistics`,
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
           params: {
             bulan,

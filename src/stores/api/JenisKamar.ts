@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { api } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { JenisKamarType } from "@/types";
 // jenisKamar
 type Props = {
@@ -44,12 +43,11 @@ const useJenisKamarApi = create(
       order,
       paginate = false,
     }: Props) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await api({
           method: "get",
           url: `/jenis-kamar/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
           params: {
             limit,
             page,

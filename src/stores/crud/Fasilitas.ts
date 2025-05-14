@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { FasilitasType } from "@/types";
 
 type Props = {
@@ -75,12 +74,10 @@ const useFasilitas = create(
 
     // Modifikasi pada setFasilitas di dalam useFasilitas.ts
     setFasilitas: async ({ page = 1, limit = 10, search, sortby, order }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/fasilitas/`,
-          headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
@@ -130,12 +127,10 @@ const useFasilitas = create(
     },
 
     setShowFasilitas: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/fasilitas/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
 
         // Debug respons API
@@ -171,12 +166,11 @@ const useFasilitas = create(
       waktu_mulai,
       waktu_selesai,
     }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/fasilitas/available/`,
-          headers: { Authorization: `Bearer ${token}` },
+          // headers: { Authorization: `Bearer ${token}` },
           params: {
             tanggal_pemesanan,
             waktu_mulai,
@@ -200,13 +194,12 @@ const useFasilitas = create(
     },
 
     addData: async (formData) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/fasilitas/`,
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
@@ -225,12 +218,11 @@ const useFasilitas = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/fasilitas/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
+          // headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState) => ({
           dtFasilitas: {
@@ -254,13 +246,12 @@ const useFasilitas = create(
     },
 
     updateData: async (id, formData) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/fasilitas/${id}?_method=PUT`,
           headers: {
-            Authorization: `Bearer ${token}`,
+            // Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,

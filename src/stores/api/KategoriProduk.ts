@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { api } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { KategoriProdukType } from "@/types";
 // kategoriProduk
 type Props = {
@@ -44,12 +43,11 @@ const useKategoriProdukApi = create(
       order,
       paginate = false,
     }: Props) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await api({
           method: "get",
           url: `/kategori-produk/`,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { "Content-Type": "application/json" },
           params: {
             limit,
             page,

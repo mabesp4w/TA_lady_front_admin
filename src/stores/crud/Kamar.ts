@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { KamarType } from "@/types";
 
 type Props = {
@@ -74,12 +73,10 @@ const useKamar = create(
     showKamar: null,
 
     setKamar: async ({ page = 1, limit = 10, search, sortby, order }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
-          url: `/kamar/`,
-          headers: { Authorization: `Bearer ${token}` },
+          url: `/kamar`,
           params: {
             limit,
             page,
@@ -128,12 +125,10 @@ const useKamar = create(
     },
 
     setShowKamar: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
 
         // Debug respons API
@@ -166,12 +161,10 @@ const useKamar = create(
     },
 
     getAvailableRooms: async ({ check_in, check_out, jenis_kamar_id }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/kamar/available/`,
-          headers: { Authorization: `Bearer ${token}` },
           params: {
             check_in,
             check_out,
@@ -195,13 +188,11 @@ const useKamar = create(
     },
 
     addData: async (formData) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/kamar/`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,
@@ -220,12 +211,10 @@ const useKamar = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState) => ({
           dtKamar: {
@@ -247,13 +236,11 @@ const useKamar = create(
     },
 
     updateData: async (id, formData) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "POST",
           url: `/kamar/${id}?_method=PUT`,
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
           data: formData,

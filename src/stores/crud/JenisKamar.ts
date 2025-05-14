@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { JenisKamarType } from "@/types";
 // jenisKamar
 type Props = {
@@ -65,12 +64,10 @@ const useJenisKamar = create(
     showJenisKamar: null,
 
     setJenisKamar: async ({ page = 1, limit = 10, search, sortby, order }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/jenis-kamar/`,
-          headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
@@ -96,12 +93,10 @@ const useJenisKamar = create(
     },
 
     setShowJenisKamar: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/jenis-kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         set((state) => ({
           ...state,
@@ -120,12 +115,10 @@ const useJenisKamar = create(
     },
 
     addData: async (row) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/jenis-kamar/`,
-          headers: { Authorization: `Bearer ${token}` },
           data: row,
         });
         set((prevState) => ({
@@ -148,12 +141,10 @@ const useJenisKamar = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/jenis-kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState) => ({
           dtJenisKamar: {
@@ -177,12 +168,10 @@ const useJenisKamar = create(
     },
 
     updateData: async (id, row) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "PUT",
           url: `/jenis-kamar/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
           data: row,
         });
         set((prevState) => ({
@@ -214,12 +203,10 @@ const useJenisKamar = create(
     },
 
     getAllJenisKamar: async () => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/jenis-kamar/all-categories/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         return {
           status: "berhasil",

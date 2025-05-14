@@ -4,7 +4,7 @@ import HeaderDef from "@/components/header/HeaderDef";
 import MenuContextProvider from "@/context/MenuContext";
 import WelcomeContextProvider from "@/context/WelcomeContext";
 import React, { Suspense } from "react";
-import Auth from "../Auth";
+// import Auth from "../Auth";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 type Props = {

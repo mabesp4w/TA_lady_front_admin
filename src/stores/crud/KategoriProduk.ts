@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
-import useLogin from "../auth/login";
 import { KategoriProdukType } from "@/types";
 
 type Props = {
@@ -77,12 +76,10 @@ const useKategoriProduk = create(
       sortby,
       order,
     }) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/kategori-produk/`,
-          headers: { Authorization: `Bearer ${token}` },
           params: {
             limit,
             page,
@@ -108,12 +105,10 @@ const useKategoriProduk = create(
     },
 
     setShowKategoriProduk: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/kategori-produk/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         set((state) => ({
           ...state,
@@ -132,12 +127,10 @@ const useKategoriProduk = create(
     },
 
     addData: async (row) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "post",
           url: `/kategori-produk/`,
-          headers: { Authorization: `Bearer ${token}` },
           data: row,
         });
         set((prevState) => ({
@@ -160,12 +153,10 @@ const useKategoriProduk = create(
     },
 
     removeData: async (id) => {
-      const token = await useLogin.getState().setToken();
       try {
         const res = await crud({
           method: "delete",
           url: `/kategori-produk/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         set((prevState) => ({
           dtKategoriProduk: {
@@ -189,12 +180,10 @@ const useKategoriProduk = create(
     },
 
     updateData: async (id, row) => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "PUT",
           url: `/kategori-produk/${id}/`,
-          headers: { Authorization: `Bearer ${token}` },
           data: row,
         });
         set((prevState) => ({
@@ -226,12 +215,10 @@ const useKategoriProduk = create(
     },
 
     getAllKategoriProduk: async () => {
-      const token = await useLogin.getState().setToken();
       try {
         const response = await crud({
           method: "get",
           url: `/kategori-produk/all-categories/`,
-          headers: { Authorization: `Bearer ${token}` },
         });
         return {
           status: "berhasil",

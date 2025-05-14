@@ -138,7 +138,7 @@ const Sidebar: React.FC = () => {
       >
         {/* Logo */}
         <div className="px-6 py-4 border-b border-base-300">
-          <h1 className="text-xl font-bold">Hotel Management</h1>
+          <h1 className="text-xl font-bold">Terminal 12</h1>
         </div>
 
         {/* Menu Items */}
