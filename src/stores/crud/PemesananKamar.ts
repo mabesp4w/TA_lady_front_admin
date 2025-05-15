@@ -1,5 +1,5 @@
 /** @format */
-
+// store/crud/pemesananKamar
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { crud } from "@/services/baseURL";
@@ -65,6 +65,10 @@ type Store = {
   processPayment: (
     id: number | string,
     metode_pembayaran: string
+  ) => Promise<{ status: string; data?: any; error?: any }>;
+
+  getPemesananByCode: (
+    code: string
   ) => Promise<{ status: string; data?: any; error?: any }>;
 };
 
@@ -269,6 +273,33 @@ const usePemesananKamar = create(
         return {
           status: "error",
           data: error.response.data,
+        };
+      }
+    },
+
+    getPemesananByCode: async (code: string) => {
+      try {
+        const response = await crud({
+          method: "get",
+          url: `/pemesanan-kamar/code/${code}`,
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (response.data && response.data.data) {
+          return {
+            status: "berhasil",
+            data: response.data.data,
+          };
+        } else {
+          return {
+            status: "error",
+            error: { message: "Data pemesanan tidak ditemukan" },
+          };
+        }
+      } catch (error: any) {
+        return {
+          status: "error",
+          error: error.response?.data,
         };
       }
     },
