@@ -78,19 +78,11 @@ const Sidebar: React.FC = () => {
       name: "Pesanan",
       path: "/pesanan",
       icon: <HiReceiptTax className="w-6 h-6" />,
-      subMenus: [
-        { name: "Semua Pesanan", path: "/pesanan" },
-        { name: "Item Pesanan", path: "/pesanan/item" },
-      ],
     },
     {
       name: "Pembayaran",
       path: "/pembayaran",
       icon: <HiReceiptTax className="w-6 h-6" />,
-      subMenus: [
-        { name: "Semua Pembayaran", path: "/pembayaran" },
-        { name: "Transaksi Midtrans", path: "/pembayaran/midtrans" },
-      ],
     },
     {
       name: "Pelanggan",

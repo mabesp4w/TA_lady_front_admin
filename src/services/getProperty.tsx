@@ -74,7 +74,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
     }
 
     // cek currency
-    const currencyProps = ["harga", "harga_per_malam"];
+    const currencyProps = ["harga", "harga_per_malam", "total_harga"];
     if (currencyProps.includes(lastPart)) {
       return formatRupiah(currentObj);
     }
@@ -104,7 +104,13 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
     }
 
     // Date processing
-    const dateProps = ["announcement_date", "news_date", "tgl_bergabung"];
+    const dateProps = [
+      "announcement_date",
+      "news_date",
+      "tgl_bergabung",
+      "tanggal_check_in",
+      "tanggal_check_out",
+    ];
     if (dateProps.includes(lastPart)) {
       return moment(currentObj).format("DD/MM/YYYY");
     }
@@ -115,6 +121,7 @@ const getProperty = (obj: any, prop: any, index: number, setIndexBox: any) => {
       "file_book",
       "main_image",
       "jalur_gambar",
+      "foto_pelanggan",
     ];
     if (fileProps.includes(lastPart)) {
       const extension = currentObj?.split(".")?.pop();

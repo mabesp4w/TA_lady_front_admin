@@ -6,7 +6,7 @@ import Content from "./Content";
 
 const KategoriProduk = () => {
   return (
-    <section className="flex flex-col h-full w-full">
+    <section className="flex flex-col h-full">
       <Suspense fallback={<div>Loading...</div>}>
         <Content />
       </Suspense>

@@ -89,8 +89,8 @@ const FacilityBookingDetails: React.FC<FacilityBookingDetailsProps> = ({
             <span>Waktu</span>
           </div>
           <span className="font-medium">
-            {momentId(facilityBooking.waktu_mulai).format("HH:mm")} -{" "}
-            {momentId(facilityBooking.waktu_selesai).format("HH:mm")}
+            {momentId(facilityBooking.waktu_mulai, "HH:mm").format("HH:mm")} -{" "}
+            {momentId(facilityBooking.waktu_selesai, "HH:mm").format("HH:mm")}
           </span>
         </div>
 

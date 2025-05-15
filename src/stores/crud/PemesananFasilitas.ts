@@ -159,7 +159,7 @@ const usePemesananFasilitas = create(
       try {
         const response = await crud({
           method: "get",
-          url: `/pemesanan-fasilitas/admin/bookings`,
+          url: `/pemesanan-fasilitas/bookings`,
           params: {
             limit,
             page,

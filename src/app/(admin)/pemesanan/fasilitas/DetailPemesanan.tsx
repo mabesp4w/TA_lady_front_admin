@@ -346,20 +346,6 @@ const DetailPemesanan = ({ isAdmin = false }: Props) => {
               </button>
             </div>
           )}
-
-          {/* Barcode (Optional) */}
-          {showPemesanan.barcode && (
-            <div className="bg-gray-50 p-4 rounded-lg text-center">
-              <h3 className="font-semibold text-lg mb-2">Barcode</h3>
-              <p className="text-sm text-gray-500 mb-2">
-                Tunjukkan barcode ini saat menggunakan fasilitas
-              </p>
-              <div className="p-4 bg-white inline-block rounded-md">
-                {/* Implement barcode display here, could be a simple placeholder for now */}
-                <div className="text-center">{showPemesanan.barcode}</div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </ModalDef>

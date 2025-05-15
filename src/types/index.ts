@@ -160,6 +160,7 @@ export interface ItemPesananType extends BaseModel {
 
 // Pembayaran (Payment)
 export interface PembayaranType extends BaseModel {
+  payable: any;
   jenis_pembayaran: string;
   pesanan_id: string;
   payable_type?: string;

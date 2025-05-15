@@ -27,7 +27,7 @@ const layout = ({ children }: Props) => {
                 <HeaderDef />
               </Suspense>
             </div>
-            <div className="px-4 h-full">{children}</div>
+            <div className="px-4 h-full w-full flex grow">{children}</div>
           </div>
         </section>
         {/* <Auth /> */}
