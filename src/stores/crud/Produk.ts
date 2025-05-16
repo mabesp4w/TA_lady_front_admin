@@ -95,7 +95,6 @@ const useProduk = create(
         const response = await crud({
           method: "get",
           url: `/produk/`,
-          headers: { "Content-Type": "application/json" },
           params: {
             limit,
             page,
