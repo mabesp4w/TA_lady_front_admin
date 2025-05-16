@@ -46,7 +46,7 @@ const useProdukApi = create(
       try {
         const response = await api({
           method: "get",
-          url: `/products/`,
+          url: `/products`,
           params: {
             limit,
             page,

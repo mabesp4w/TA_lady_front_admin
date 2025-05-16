@@ -46,7 +46,7 @@ const useFasilitasApi = create(
       try {
         const response = await api({
           method: "get",
-          url: `/fasilitas/`,
+          url: `/fasilitas`,
           params: {
             limit,
             page,

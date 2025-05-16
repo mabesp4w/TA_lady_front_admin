@@ -94,7 +94,7 @@ const useProduk = create(
       try {
         const response = await crud({
           method: "get",
-          url: `/produk/`,
+          url: `/produk`,
           params: {
             limit,
             page,
@@ -126,7 +126,7 @@ const useProduk = create(
       try {
         const response = await crud({
           method: "get",
-          url: `/produk/${id}/`,
+          url: `/produk/${id}`,
           headers: { "Content-Type": "application/json" },
         });
 
@@ -159,7 +159,7 @@ const useProduk = create(
       try {
         const response = await crud({
           method: "get",
-          url: `/produk/available/`,
+          url: `/produk/available`,
           headers: { "Content-Type": "application/json" },
           params: {
             kategori_produk_id,
@@ -185,7 +185,7 @@ const useProduk = create(
       try {
         const res = await crud({
           method: "post",
-          url: `/produk/`,
+          url: `/produk`,
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -208,7 +208,7 @@ const useProduk = create(
       try {
         const res = await crud({
           method: "delete",
-          url: `/produk/${id}/`,
+          url: `/produk/${id}`,
           headers: { "Content-Type": "application/json" },
         });
         set((prevState) => ({

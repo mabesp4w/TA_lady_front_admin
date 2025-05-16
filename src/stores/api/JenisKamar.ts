@@ -46,8 +46,7 @@ const useJenisKamarApi = create(
       try {
         const response = await api({
           method: "get",
-          url: `/jenis-kamar/`,
-          headers: { "Content-Type": "application/json" },
+          url: `/jenis-kamar`,
           params: {
             limit,
             page,

@@ -134,7 +134,7 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* Menu Items */}
-        <div className="overflow-y-auto h-[calc(100vh-4rem)]">
+        <div className="overflow-y-auto h-[calc(100vh-4rem)] flex flex-col justify-between">
           <ul className="menu p-4 text-base-content">
             {menuItems.map((item) => (
               <li key={item.name} className="mb-1">

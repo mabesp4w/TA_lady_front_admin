@@ -46,8 +46,7 @@ const useKategoriProdukApi = create(
       try {
         const response = await api({
           method: "get",
-          url: `/kategori-produk/`,
-          headers: { "Content-Type": "application/json" },
+          url: `/kategori-produk`,
           params: {
             limit,
             page,
