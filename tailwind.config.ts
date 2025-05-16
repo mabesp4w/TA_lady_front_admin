@@ -14,7 +14,7 @@ const config: Config = {
       backgroundImage: {
         linear:
           "linear-gradient(77deg, rgba(10,38,64,1) 16%, rgba(28,61,91,1) 79%)",
-        "1": "url('/images/bg/2.jpg')",
+        "1": "url('/images/bg/1.jpg')",
       },
       fontFamily: {
         cabin: ["Cabin", "sans-serif"],

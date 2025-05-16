@@ -194,8 +194,8 @@ const Sidebar: React.FC = () => {
             ))}
           </ul>
 
-          <div className="flex justify-center">
-            <Link href="/auth/logout" className="btn btn-primary">
+          <div className="flex w-full">
+            <Link href="/auth/logout" className="btn btn-neutral w-full">
               Logout
             </Link>
           </div>
