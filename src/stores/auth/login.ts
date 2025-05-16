@@ -35,8 +35,8 @@ const useLogin = create(
       try {
         const response = await auth({
           method: "post",
-          url: `/login/`, // Gunakan endpoint simple-login yang baru
-          data: data, // Kirim langsung sebagai JSON
+          url: `/login`,
+          data: data,
           headers: {
             "Content-Type": "application/json",
           },
@@ -58,7 +58,7 @@ const useLogin = create(
       try {
         const response = await auth({
           method: "post",
-          url: `/check-token/`,
+          url: `/check_token`,
           headers: { Authorization: `Bearer ${token}` },
         });
         set((state) => ({ ...state, dtUser: response.data?.user }));

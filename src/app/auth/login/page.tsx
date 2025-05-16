@@ -1,142 +1,146 @@
-/**
- * eslint-disable @next/next/no-img-element
- *
- * @format
- */
-
 /** @format */
 "use client";
-import useLogin from "@/stores/auth/login";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { SubmitHandler, useForm } from "react-hook-form";
-import FormLogin from "./FormLogin";
-import Link from "next/link";
+import toast from "react-hot-toast";
+import useLogin from "@/stores/auth/login";
+import InputText from "@/components/input/InputText";
+import Image from "next/image";
+import { FaLock } from "react-icons/fa";
+import { MdOutlineEmail } from "react-icons/md";
 
-type Inputs = {
+type LoginFormValues = {
   email: string;
-  password: string | number;
+  password: string;
 };
 
-const Login = () => {
-  // store
-  const { setLogin, cekToken } = useLogin();
+const AdminLogin = () => {
+  const [loading, setLoading] = useState(false);
+  const { setLogin } = useLogin();
   const router = useRouter();
 
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
-  // jika sudah login
-  const fetchAuth = async () => {
-    const token = Cookies.get("token");
-    if (token) {
-      const cekAuth = await cekToken();
-      if (!cekAuth?.error) {
-        const role = Cookies.get("role");
-        if (role === "admin") {
-          return router.push("/admin/dashboard");
-        }
-        if (role === "user") {
-          return router.push("/dashboard");
-        }
-      }
-    }
-    setIsLoading(false);
-  };
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      fetchAuth();
-    }
-  }, []);
-
-  // hook form
   const {
     register,
-    setValue,
-    control,
-    watch,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<LoginFormValues>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (row) => {
-    setIsLoading(true);
-    setError("");
-    const res = await setLogin(row);
-    console.log(res);
-    if (res?.error) {
-      setError(res?.error?.message);
-    } else {
-      const { data } = res;
-      Cookies.set("token", data.access_token, { expires: 7 });
-      Cookies.set("role", data.user.role, { expires: 7 });
-      Cookies.set("user", JSON.stringify(data.user), { expires: 7 });
-      if (data.user.role === "admin") {
-        return router.push("/admin/dashboard");
+  const onSubmit = async (data: LoginFormValues) => {
+    setLoading(true);
+
+    try {
+      const response = await setLogin(data);
+
+      if (response.status === "success") {
+        // Set token in cookies (10 hours expiry matching backend)
+        Cookies.set("token", response.data.token, { expires: 7 });
+
+        // Store user role if needed
+        if (response.data.role === "admin") {
+          // Show success toast
+          toast.success("Login berhasil!");
+
+          // Redirect to admin dashboard
+          router.push("/");
+        } else {
+          toast.error("Anda tidak memiliki akses admin");
+        }
       } else {
-        return router.push("/dashboard");
+        // Handle error from API response
+        toast.error(
+          response.error?.message || "Kombinasi email dan password salah"
+        );
       }
-    }
-
-    if (res) {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+    } catch (error) {
+      console.error(error);
+      toast.error("Terjadi kesalahan, silakan coba lagi");
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
-    <div className="min-h-screen bg-1 bg-cover bg-center font-prompt">
-      <div className="flex flex-col items-center min-h-screen justify-center backdrop-blur-sm bg-black/50 z-10">
-        <div className="bg-white/10 text-font-1 rounded py-8 px-4 mx-6 md:py-8 md:px-12 flex flex-col items-center justify-center z-50">
-          <div className="w-full mb-2">
-            <h5 className="text-sm font-bold text-center md:text-xl text-white">
-              Selamat datang di
-            </h5>
-            <h3 className="text-center mt-2 md:text-2xl text-base text-white font-extrabold">
-              Ruang Baca WWF
-            </h3>
-          </div>
-          <p className="text-center mt-2 text-[10px] text-gray-100 text-base">
-            Silahkan login untuk mendapatkan akses ke halaman admin
-          </p>
-          <span>
-            {error && <p className="text-red-600 text-center">{error}</p>}
-          </span>
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-8 w-full">
-            <FormLogin
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-50 to-blue-100">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        {/* Logo */}
+        <div className="flex justify-center mb-6">
+          <Image
+            src="/logo.png"
+            alt="Resort Terminal 12"
+            width={180}
+            height={70}
+            priority
+            className="h-16 object-contain"
+            onError={(e) => {
+              // Fallback if image fails to load
+              e.currentTarget.style.display = "none";
+            }}
+          />
+        </div>
+
+        <h1 className="text-2xl font-bold text-center text-gray-800 mb-2">
+          Admin Login
+        </h1>
+        <p className="text-center text-gray-600 mb-6">Resort Terminal 12</p>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <MdOutlineEmail size={20} />
+            </div>
+
+            <InputText
+              name="email"
+              type="email"
+              placeholder="Email"
               register={register}
-              errors={errors}
-              control={control}
-              watch={watch}
-              setValue={setValue}
+              required={true}
+              errors={errors.email}
+              addClass="mb-1"
+              autoComplete="email"
             />
-            <div className="mt-4">
-              {isLoading ? (
-                <span className="loading loading-spinner loading-md" />
-              ) : (
-                <button
-                  type="submit"
-                  className="btn btn-primary w-full"
-                  onClick={handleSubmit(onSubmit)}
-                >
-                  Login
-                </button>
-              )}
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <FaLock size={18} />
             </div>
-            <div className="text-center mt-4 text-accent">
-              <p>
-                Belum punya akun?{" "}
-                <Link href="/auth/register" className="text-primary">
-                  Daftar
-                </Link>
-              </p>
-            </div>
-          </form>
+
+            <InputText
+              name="password"
+              type="password"
+              placeholder="Password"
+              register={register}
+              required={true}
+              errors={errors.password}
+              addClass="mb-1"
+              autoComplete="current-password"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full btn bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md transition-colors duration-300 mt-3"
+          >
+            {loading ? (
+              <span className="loading loading-spinner loading-sm mr-2"></span>
+            ) : null}
+            {loading ? "Memproses..." : "Login"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center text-sm text-gray-600">
+          <p>
+            © {new Date().getFullYear()} Resort Terminal 12. All rights
+            reserved.
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;

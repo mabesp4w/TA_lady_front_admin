@@ -195,10 +195,10 @@ const InputText = ({
 
       {type === "password" && (
         <div
-          className="absolute right-2 h-fit top-12 cursor-pointer text-accent flex items-center"
+          className="absolute right-2 h-fit top-1/2 cursor-pointer text-accent flex items-center"
           onClick={tooglePassword}
         >
-          <div className="">
+          <div className="top-1/2">
             {isTypePassword ? <BsEyeSlash size={20} /> : <BsEye size={20} />}
           </div>
         </div>

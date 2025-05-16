@@ -22,31 +22,27 @@ const Auth = () => {
       router.push("/auth/login");
       return;
     }
-    if (path === "admin" && res?.data?.role !== "admin") {
+    if (res?.data?.role !== "admin" && path === "/") {
       setIsLoading(true);
       // redirect to user
-      router.push("/");
+      router.push("/auth/login");
       setIsLoading(false);
       return;
     }
-    if (path === "" && res?.data?.role !== "umkm") {
-      setIsLoading(true);
-      // redirect to admin
-      router.push("/admin/dashboard");
-      setIsLoading(false);
-      return;
-    }
+
     setIsLoading(false);
   };
 
   useEffect(() => {
     getCek();
+    setIsLoading(false);
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const loadData = async () => {
     await getCek();
+    setIsLoading(false);
   };
 
   useEffect(() => {
