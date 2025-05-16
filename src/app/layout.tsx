@@ -6,8 +6,8 @@ import DeviceTheme from "@/utils/DeviceTheme";
 import Auth from "./Auth";
 
 export const metadata: Metadata = {
-  title: "UMKM - WWF",
-  description: "Website UMKM WWF",
+  title: "Terminal 12",
+  description: "Website Terminal 12",
   authors: {
     name: "SmartSpartacuS",
     url: "https://smart.satgar.my.id",
